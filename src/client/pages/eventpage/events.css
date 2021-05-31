@@ -1,0 +1,39 @@
+.new-event-container{
+  width: fit-content;
+  background-color: #f2f2f2;
+  padding: 1.5em;
+  border-radius: 1em;
+}
+
+label#thumbnail {
+  margin-bottom: 20px;
+  border: 1px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+}
+
+label#thumbnail div input[type="file"] {
+  display: none;
+}
+
+label#thumbnail.has-thumbnail {
+  border: 0;
+}
+
+label#thumbnail.has-thumbnail img {
+  display: none;
+}
+
+.event-validation{
+    margin-top: 12px;
+}
+
+.new-event-container svg{
+  width: 15vh;
+  height: 15vh;
+}

@@ -1,0 +1,44 @@
+.top-navigation-bar {
+  width: 80%;
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+  border-radius: 10px;
+}
+
+.top-navigation-bar span {
+  margin-right: 5px;
+}
+.top-navigation-bar span svg {
+  width: 35px;
+  height: auto;
+}
+
+.top-navigation-bar span a,
+.top-navigation-bar span a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.top-navigation-bar .nav-item {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-left: 13px;
+}
+
+.top-navigation-bar .nav-item a {
+  color: #111111;
+}
+.top-navigation-bar .nav-item a:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.top-navigation-bar .nav-item .active-nav-link{
+  color: blue;
+}
+
+@media (max-width: 750px) {
+  .top-navigation-bar {
+    width: 90%;
+  }
+}

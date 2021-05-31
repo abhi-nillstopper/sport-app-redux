@@ -1,0 +1,42 @@
+/* .myregistration-container {
+  width: fit-content;
+} */
+
+.my-events {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+}
+
+.my-events li {
+  padding: 1em;
+  margin: 1rem;
+  border-radius: 1em;
+  background-color: #e4e4e4;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.my-events div {
+  margin-top: 0.4em;
+}
+
+.Approved {
+  color: green;
+}
+
+.Rejected,
+.Pending {
+  color: red;
+}
+
+@media (max-width: 750px) {
+  .my-events {
+    grid-template-columns: 1fr;
+  }
+  .my-events li {
+    margin: 0.5rem;
+  }
+}

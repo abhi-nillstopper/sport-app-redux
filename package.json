@@ -1,0 +1,88 @@
+{
+  "name": "mern_app",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "engines": {
+    "node": "14.17.0",
+    "npm": "6.14.13"
+  },
+  "main": "src/server/index.js",
+  "scripts": {
+    "heroku-prebuild": "npm run node-clean",
+    "heroku-postbuild": "npm run build-app",
+    "node-clean": "rimraf node_modules && mkdir node_modules && npm install && rimraf ./build && mkdir build",
+    "build-app": "react-scripts build && npm run babel-build",
+    "start-client": "SET REACT_APP_AXIOS_BASE_URL=http://localhost:8000 && SET PORT=5500 && react-scripts start",
+    "start": "node build/index.js",
+    "build": "babel-node ./src/index.js",
+    "babel-build": "babel -d ./build ./src/server -s",
+    "clean": "rimraf ./build && mkdir build",
+    "build-client": "react-scripts build",
+    "start-dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src --fix",
+    "node-start": "npm run compile-run",
+    "compile-run": "babel src/server --out-dir build --source-maps && node ./build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/runtime": "^7.14.0",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.8.3",
+    "aws-sdk": "^2.906.0",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
+    "bootstrap": "^4.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.14",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "prettier": "^2.2.1",
+    "react": "^17.0.1",
+    "react-autobind": "^1.0.6",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "rimraf": "^3.0.2",
+    "serve": "^11.3.2",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
+    "web-vitals": "^1.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.2.0",
+    "nodemon": "^2.0.7"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
