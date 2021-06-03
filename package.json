@@ -9,7 +9,7 @@
   },
   "main": "src/server/index.js",
   "scripts": {
-    "heroku-prebuild": "npm run node-clean",
+    "heroku-prebuild": "npm i rimraf && npm run node-clean",
     "heroku-postbuild": "npm run build-app",
     "node-clean": "rimraf node_modules && mkdir node_modules && npm install && rimraf ./build && mkdir build",
     "build-app": "react-scripts build && npm run babel-build",
