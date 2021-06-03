@@ -1,17 +1,18 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import {
   Form,
   Button,
   Container,
-  Image,
   Alert,
   Dropdown,
   SplitButton,
 } from "react-bootstrap";
-import api from "../../service/api";
+import { connect } from "react-redux";
 import autoBind from "react-autobind";
-import {ReactComponent as CameraIcon} from "../../assets/camera.svg";
+import { ReactComponent as CameraIcon } from "../../assets/camera.svg";
+import { createEvents, changeSuccess } from "../../actions/event_action";
 import "./events.css";
 
 //Create Event
@@ -44,15 +45,6 @@ class EventPage extends React.Component {
     autoBind(this);
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log("user", this.user)
-  //   if (!this.user) {
-  //     this.props.history.push("/login");
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
   componentDidMount() {
     if (!this.user) {
       this.props.history.push("/login");
@@ -63,12 +55,26 @@ class EventPage extends React.Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.success !== prevState.success) {
+      return { success: nextProps.success };
+    } else return null;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    let { thumbnail } = this.state;
+    let { thumbnail, success } = this.state;
+
     if (prevState.thumbnail !== thumbnail) {
       this.setState({
         preview: thumbnail ? URL.createObjectURL(thumbnail) : null,
       });
+    }
+
+    if (success) {
+      setTimeout(() => {
+        this.props.changeSuccess(false);
+        this.props.history.push("/");
+      }, 2000);
     }
   }
 
@@ -100,12 +106,7 @@ class EventPage extends React.Component {
         date !== "" &&
         sport !== ""
       ) {
-        await api.post("/express/event", eventData);
-        this.setState({ success: true });
-        setTimeout(() => {
-          this.setState({ success: false });
-          this.props.history.push("/");
-        }, 2000);
+        this.props.createEvents(eventData);
       } else {
         this.setState({ fieldEmpty: true });
         setTimeout(() => this.setState({ fieldEmpty: false }), 2000);
@@ -152,11 +153,14 @@ class EventPage extends React.Component {
             <Form.Label>Upload Image:</Form.Label>
             <Form.Label
               id="thumbnail"
-              style={{ backgroundImage: `url(${preview})` }}
+              style={{
+                backgroundImage: `url(${preview})`,
+                backgroundSize: "cover",
+              }}
               className={thumbnail ? "has-thumbnail" : ""}
             >
               <Form.File name="thumbnail" onChange={this.handleOnChange} />
-              <CameraIcon/>
+              {!preview && <CameraIcon />}
             </Form.Label>
           </Form.Group>
           <Form.Group controlId="formBasicTitle">
@@ -259,4 +263,24 @@ class EventPage extends React.Component {
   }
 }
 
-export default withRouter(EventPage);
+const mapStateToProps = (state) => ({
+  success: state.event.success,
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    ...bindActionCreators({ createEvents, changeSuccess }, dispatch),
+  };
+}
+
+// export default connect(mapStateToProps, {createEvents} )(withRouter(EventPage))
+
+// or
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(EventPage));
+
+// export default withRouter(EventPage);

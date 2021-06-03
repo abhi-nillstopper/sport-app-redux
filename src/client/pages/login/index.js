@@ -1,19 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import api from "../../service/api";
-import { UserContext } from "../../user-context";
+import { useSelector, useDispatch } from "react-redux";
+// import { UserContext } from "../../user-context";
+import { loginHandler } from "../../actions/authentication_action";
 import "./login.css";
 
 export default function Login({ history }) {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  // const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
+  const isLoggedIn = useSelector((state) => {
+    return state.authentication.isLoggedIn;
+  });
+  
   useEffect(() => {
     isLoggedIn && history.push("/");
-  }, []);
+  }, [isLoggedIn]);
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +35,8 @@ export default function Login({ history }) {
       if (user_id) {
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("user", user);
-        setIsLoggedIn(true);
+        await dispatch(loginHandler());
+        // setIsLoggedIn(true);
         history.push("/");
       } else {
         const { message } = response.data;

@@ -10,13 +10,16 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import { io as socketio } from "socket.io-client";
+import { useSelector, useDispatch } from "react-redux";
 import "./dashboard.css";
 import api from "../../service/api";
 import { ReactComponent as DeletIcon } from "../../assets/dustbin.svg";
-import { UserContext } from "../../user-context";
+import { fetchEvents } from "../../actions/dashboard_action";
+import { logoutHandler } from "../../actions/authentication_action";
 
 //dashboard will shoow all the events
 export default function Dashboard({ history }) {
+  const dispatch = useDispatch();
   const radios = [
     { name: "All Sport", value: "" },
     { name: "My Events", value: "myevents" },
@@ -24,9 +27,7 @@ export default function Dashboard({ history }) {
     { name: "Cycling", value: "cycling" },
     { name: "Swimming", value: "swimming" },
   ];
-  const { setIsLoggedIn } = useContext(UserContext);
 
-  const [events, setEvents] = useState([]);
   const [isLoading, SetIsLoading] = useState(true);
   const [radioValue, setRadioValue] = useState("");
   const [error, setError] = useState(false);
@@ -37,14 +38,31 @@ export default function Dashboard({ history }) {
 
   const user_id = localStorage.getItem("user_id");
   // const user = localStorage.getItem("user");
+  const isLoggedIn = useSelector((state) => {
+    return state.authentication.isLoggedIn;
+  });
 
-  // useEffect(() => {
-  //   isLoggedIn && history.push("/login");
-  // }, []);
+  const events = useSelector((state) => {
+    return state.dashboard.events;
+  });
+
+  useEffect(() => {
+    isLoggedIn && history.push("/");
+    !isLoggedIn && history.push("/login");
+  }, [isLoggedIn]);
 
   useEffect(() => {
     getEvents(radioValue);
   }, [radioValue]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      //disable event dropdown
+      document.querySelector(
+        `div[name="select-event-dropdown"]`
+      ).children[0].disabled = true;
+    }
+  }, [isLoading]);
 
   const socket = useMemo(
     () => socketio("http://localhost:8000/", { query: { user_id } }),
@@ -59,19 +77,8 @@ export default function Dashboard({ history }) {
 
   const getEvents = async (filter) => {
     try {
-      const url = filter
-        ? filter === "myevents"
-          ? `/express/user/events`
-          : `/express/dashboard/${filter}`
-        : "/express/dashboard";
-      const response = await api.get(url);
-      setEvents(response.data.events);
+      await dispatch(fetchEvents(filter));
       SetIsLoading(false);
-
-      //disable event dropdown
-      document.querySelector(
-        `div[name="select-event-dropdown"]`
-      ).children[0].disabled = true;
     } catch (error) {
       console.log(error);
       errorHandler(error.message, true);
@@ -91,14 +98,14 @@ export default function Dashboard({ history }) {
     setErrorMessage(message);
     setTimeout(() => {
       setError(false);
-      logout ? logoutHandler() : dropDownHandler();
+      logout ? userLogout() : dropDownHandler();
     }, 2000);
   };
 
-  const logoutHandler = () => {
+  const userLogout = async () => {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
+    await dispatch(logoutHandler());
     history.push("/login");
   };
 
@@ -217,22 +224,6 @@ export default function Dashboard({ history }) {
                 </Dropdown.Item>
               ))}
             </SplitButton>
-            {/* <ButtonGroup toggle>
-          {radios.map((radio, idx) => (
-            <ToggleButton
-              key={idx}
-              type="radio"
-              variant="info"
-              name="radio"
-              value={radio.value}
-              checked={radioValue === radio.value}
-              // active={radioValue === radio.value}
-              onChange={(e) => radioHandler(e.currentTarget.value)}
-            >
-              {radio.name}
-            </ToggleButton>
-          ))}
-        </ButtonGroup> */}
           </div>
           <ul className="events-list">
             {events.map((event) => {

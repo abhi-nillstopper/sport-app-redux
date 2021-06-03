@@ -14,7 +14,7 @@ ul.events-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 2em;
-  margin: auto;
+  /* margin: auto; */
 }
 
 ul.events-list li {

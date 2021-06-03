@@ -1,18 +1,26 @@
 import React, { useContext } from "react";
 import { Nav, Navbar, Button } from "react-bootstrap";
 import { Link, NavLink, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as SportHome } from "../../assets/sports_mode.svg";
-import { UserContext } from "../../user-context";
+// import { UserContext } from "../../user-context";
+import { logoutHandler } from "../../actions/authentication_action";
 import "./top_navigation.css";
 
 export default function TopNavigation(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
-  const handleLogout = () => {
+  const isLoggedIn = useSelector((state) => {
+    return state.authentication.isLoggedIn;
+  });
+
+  // const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+
+  const handleLogout = async () => {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
+    await dispatch(logoutHandler());
     history.push("/login");
   };
 

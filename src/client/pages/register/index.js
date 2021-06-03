@@ -1,17 +1,52 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import api from "../../service/api";
-import { UserContext } from "../../user-context";
-import "./register.css"
+import { useSelector, useDispatch } from "react-redux";
+import { registerUser } from "../../actions/register_action";
+import { loginHandler } from "../../actions/authentication_action";
 
-export default function Login({ history }) {
+import "./register.css";
+
+export default function Register({ history }) {
+  const dispatch = useDispatch();
+
+  const isLoggedIn = useSelector((state) => {
+    return state.authentication.isLoggedIn;
+  });
+
+  const response = useSelector((state) => {
+    return state.register.response;
+  });
+
+  useEffect(() => {
+    isLoggedIn && history.push("/");
+  }, [isLoggedIn]);
+
+  useEffect(async () => {
+    if (
+      Object.keys(response).length > 0 &&
+      Object.keys(response.data).length > 0
+    ) {
+      const user_id = response.data.user_id || false;
+      const user = response.data.user || false;
+
+      if (user_id && user) {
+        localStorage.setItem("user_id", user_id);
+        localStorage.setItem("user", user);
+        await dispatch(loginHandler());
+        history.push("/");
+      } else {
+        const { message } = response.data;
+        errorHandler(message);
+      }
+    }
+  }, [response]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [fieldEmpty, setFieldEmpty] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { setIsLoggedIn } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,24 +56,14 @@ export default function Login({ history }) {
       firstName !== "" &&
       lastName !== ""
     ) {
-      const response = await api.post("/express/user/register", {
+      let payload = {
         email,
         password,
         firstName,
         lastName,
-      });
-      const user_id = response.data.user_id || false;
-      const user = response.data.user || false;
+      };
 
-      if (user_id && user) {
-        localStorage.setItem("user_id", user_id);
-        localStorage.setItem("user", user);
-        setIsLoggedIn(true);
-        history.push("/");
-      } else {
-        const { message } = response.data;
-        errorHandler(message);
-      }
+      await dispatch(registerUser(payload));
     } else {
       errorHandler("You need to fill all the inputs");
     }
