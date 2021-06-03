@@ -35,6 +35,7 @@
 
 .top-navigation-bar .nav-item .active-nav-link{
   color: blue;
+  text-shadow: 1px 1px 1px;
 }
 
 @media (max-width: 750px) {
