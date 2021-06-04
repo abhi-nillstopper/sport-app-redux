@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== "production") {
 
 //socket.io Server
 const io = new ioServer(httpServer, {
-  cors: { origin: process.env.SPORT_FRONTEND_URL, methods: ["GET", "POST"] },
+  cors: { origin: process.env.SPORT_FRONTEND_URL.trim(), methods: ["GET", "POST"] },
 });
 
 io.on("connection", (socket) => {
