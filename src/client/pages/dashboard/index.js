@@ -65,7 +65,10 @@ export default function Dashboard({ history }) {
   }, [isLoading]);
 
   const socket = useMemo(
-    () => socketio("http://localhost:8000/", { query: { user_id } }),
+    () =>
+      socketio(process.env.REACT_APP_AXIOS_BASE_URL.trim(), {
+        query: { user_id },
+      }),
     [user_id]
   );
 
