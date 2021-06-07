@@ -4,7 +4,7 @@
 
 > AWS s3 bucket, Socket.io.
 
-> React.js, React-Bootstrap, socket.io-client.
+> React.js, Redux, React-Bootstrap, socket.io-client.
 
 > ECMAScript-ES6, Babel transpiler.
 
