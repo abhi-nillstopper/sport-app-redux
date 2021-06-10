@@ -49,7 +49,7 @@ Express app will run on http://localhost:8000
 ## You can look at below URL to explore the app in production.
 
 ```sh
-https://sport-app-one.herokuapp.com
+https://sport-app-x.herokuapp.com
 ```
 
 **Free Software, Hell Yeah!**
