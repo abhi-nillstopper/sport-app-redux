@@ -4,7 +4,7 @@
 
 > AWS s3 bucket, Socket.io.
 
-> React.js, React-Bootstrap, socket.io-client.
+> React.js, Redux, React-Bootstrap, socket.io-client.
 
 > ECMAScript-ES6, Babel transpiler.
 
@@ -49,7 +49,7 @@ Express app will run on http://localhost:8000
 ## You can look at below URL to explore the app in production.
 
 ```sh
-https://sport-app-one.herokuapp.com
+https://sport-app-x.herokuapp.com
 ```
 
 **Free Software, Hell Yeah!**
