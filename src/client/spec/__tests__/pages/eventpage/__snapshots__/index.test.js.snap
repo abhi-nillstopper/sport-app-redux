@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event page snapshot renders without crashing 1`] = `
+<div
+  className="new-event-container container"
+>
+  <h2>
+    Create your event
+  </h2>
+  <form
+    className=""
+    onSubmit={[Function]}
+  >
+    <div
+      className="form-group"
+    >
+      <label
+        className="form-label"
+        htmlFor="formBasicThumbnail"
+      >
+        Upload Image:
+      </label>
+      <label
+        className="form-label"
+        htmlFor="formBasicThumbnail"
+        id="thumbnail"
+        style={
+          Object {
+            "backgroundImage": "url(null)",
+            "backgroundSize": "cover",
+          }
+        }
+      >
+        <div
+          className="form-file"
+        >
+          <input
+            className="form-control-file"
+            disabled={false}
+            id="formBasicThumbnail"
+            name="thumbnail"
+            onChange={[Function]}
+            type="file"
+          />
+        </div>
+        <span />
+      </label>
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="form-label"
+        htmlFor="formBasicTitle"
+      >
+        Title:
+      </label>
+      <input
+        className="form-control"
+        id="formBasicTitle"
+        name="title"
+        onChange={[Function]}
+        placeholder="Enter Title"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="form-label"
+        htmlFor="formBasicDescription"
+      >
+        Description:
+      </label>
+      <input
+        className="form-control"
+        id="formBasicDescription"
+        name="description"
+        onChange={[Function]}
+        placeholder="Enter Description"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="form-label"
+        htmlFor="formBasicPrice"
+      >
+        Price:
+      </label>
+      <input
+        className="form-control"
+        id="formBasicPrice"
+        name="price"
+        onChange={[Function]}
+        placeholder="Enter Price in ₹"
+        type="number"
+        value=""
+      />
+    </div>
+    <div
+      className="form-group"
+    >
+      <label
+        className="form-label"
+        htmlFor="formBasicDate"
+      >
+        Date:
+      </label>
+      <input
+        className="form-control"
+        id="formBasicDate"
+        name="date"
+        onChange={[Function]}
+        placeholder="Enter Date"
+        type="date"
+        value=""
+      />
+    </div>
+    <div
+      className="form-group"
+    >
+      <div
+        className="dropdown btn-group"
+        name="sport-dropdown"
+        role="group"
+      >
+        <button
+          className="btn btn-secondary"
+          disabled={false}
+          type="button"
+        >
+          Sport
+        </button>
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          className="dropdown-toggle dropdown-toggle-split btn btn-secondary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            className="sr-only"
+          >
+            Toggle dropdown
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <button
+        className="full-width-btn btn btn-primary"
+        disabled={false}
+        type="submit"
+      >
+        Create Event
+      </button>
+    </div>
+    <div
+      className="form-group"
+    >
+      <button
+        className="full-width-btn btn btn-danger"
+        disabled={false}
+        onClick={[Function]}
+        title="Dashboard"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+`;

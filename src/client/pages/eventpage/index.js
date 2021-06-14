@@ -1,4 +1,5 @@
 import React from "react";
+import propType from "prop-types";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import {
@@ -263,6 +264,13 @@ class EventPage extends React.Component {
   }
 }
 
+EventPage.propType = {
+  success: propType.bool,
+  changeSuccess: propType.func,
+  createEvents: propType.func,
+  history: propType.any,
+};
+
 const mapStateToProps = (state) => ({
   success: state.event.success,
 });
@@ -282,5 +290,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(EventPage));
+
+export const PureEventPage = EventPage;
 
 // export default withRouter(EventPage);

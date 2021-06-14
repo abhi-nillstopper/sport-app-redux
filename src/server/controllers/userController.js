@@ -40,8 +40,10 @@ const UserController = {
       return res.status(400).json({
         message: "email already exist!  do you want to login instead? ",
       });
-    } catch (error) {
-      throw error(`Error while Registering new user :  ${err}`);
+    } catch (error) {return res.status(400).json({
+      message: "server error",
+    });
+      // throw error(`Error while Registering new user :  ${error}`);
     }
   },
 

@@ -51,6 +51,16 @@ export default function Dashboard({ history }) {
     !isLoggedIn && history.push("/login");
   }, [isLoggedIn]);
 
+  const getEvents = async (filter) => {
+    try {
+      await dispatch(fetchEvents(filter));
+      SetIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      errorHandler(error.message, true);
+    }
+  };
+
   useEffect(() => {
     getEvents(radioValue);
   }, [radioValue]);
@@ -78,15 +88,6 @@ export default function Dashboard({ history }) {
     });
   }, [registartionRequests, socket]);
 
-  const getEvents = async (filter) => {
-    try {
-      await dispatch(fetchEvents(filter));
-      SetIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      errorHandler(error.message, true);
-    }
-  };
 
   const dropDownHandler = (eventKey = "", event = "") => {
     setRadioValue(eventKey);
