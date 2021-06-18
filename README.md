@@ -11,7 +11,7 @@
 ## Technical Functionality
 
 - Server-side rendering (SSR)
-- [Context API](https://reactjs.org/docs/context.html) to handle global state managment.
+- Redux/ [Context API](https://reactjs.org/docs/context.html) to handle global state managment.
 - All the user request (Frontend/Backend) will be handle by Express.js only.
 - JWT authentication: User's request will be authenticated by JWT.
 - Event's image will be stored on AWS s3 bucket.
