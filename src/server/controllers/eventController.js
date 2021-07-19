@@ -11,7 +11,7 @@ const EventController = {
         user: { _id: user_id },
       },
     } = res.locals;
-    const { location } = req.file;
+    const { location, key: s3_object_key } = req.file;
 
     const userById = await User.findById(user_id);
 
@@ -27,6 +27,7 @@ const EventController = {
       sport,
       thumbnail: location,
       date,
+      s3_object_key,
     });
 
     return res.json(event);
