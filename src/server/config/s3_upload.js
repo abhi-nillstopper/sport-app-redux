@@ -3,9 +3,10 @@ import multerS3 from "multer-s3";
 import multer from "multer";
 import path from "path";
 
-const AWS_CONFIG = aws.config.accessKeyId;
+// const AWS_CONFIG = aws.config.accessKeyId;
+// picture tag
 
-const s3Bucket = new aws.S3();
+export const s3Bucket = new aws.S3();
 
 const UploadConfigS3 = multer({
   storage: multerS3({

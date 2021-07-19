@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Registration from "./registration";
+import {s3Bucket} from "../config/s3_upload"
 
 const EventSchema = new mongoose.Schema(
   {
@@ -28,6 +29,14 @@ EventSchema.virtual("thumbnail_url").get(function () {
 EventSchema.pre("deleteOne", { document: false, query: true }, function (next) {
   const _id = this.getFilter()["_id"];
   if (typeof _id !== "undefined") {
+    // let awsImgUrl;
+    // console.log("_id",_id);
+    // const event = Event.findById(_id);
+    // if(event){
+    //   awsImgUrl = event.thumbnail;
+    //   s3Bucket.deleteObject({Bucket: "sport-app-mern", Key})
+    // }
+    
     Registration.deleteMany({ event: _id }, next);
   }
   next();

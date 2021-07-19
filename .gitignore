@@ -4,7 +4,9 @@ node_modules
 .compiled
 build
 
+#env variables
 .env
+jest/setEnvVars.js
 
 
 #React.js
