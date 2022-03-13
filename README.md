@@ -20,7 +20,7 @@
 
 ## Features
 
-- User can login/register themselves on https://sport-app-one.herokuapp.com to use app.
+- User can login/register themselves on https://sport-app-x.herokuapp.com to use app.
 - User can create or participate in Event
 - To create Event Provide info i.e. Image, Date, price, name etc
 - User can participate in existing even
