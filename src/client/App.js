@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import { Provider } from "react-redux";
 import store from "./store";
-import Routes from "./routes";
+import AppRoutes from "./app_routes";
 // import { ContextWrapper } from "./user-context";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
     // <ContextWrapper>
     <Provider store={store}>
       <Container className="root-container">
-        <Routes />
+        <AppRoutes />
       </Container>
     </Provider>
     // </ContextWrapper>

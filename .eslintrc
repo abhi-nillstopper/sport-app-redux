@@ -2,6 +2,7 @@
 //     "extends": "airbnb"
 // }
 {
+  "parser":"babel-eslint",
   "env": {
     "node": true,
     "commonjs": true,
@@ -17,7 +18,8 @@
     // "document": true
   },
   "parserOptions": {
-    "ecmaVersion": 11
+    "ecmaVersion": 11,
+    "sourceType": "module"
   },
   "rules": {
     "indent": 0,

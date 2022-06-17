@@ -57,6 +57,10 @@ button {
   margin-bottom: 30px;
 }
 
+.form-group {
+  margin-bottom: 1rem;
+}
+
 .full-width-btn {
   border: 0;
   border-radius: 2px;
@@ -85,10 +89,6 @@ button {
     padding: 0.1em;
   }
 }
-
-
-
-
 
 /* .content button[type="submit"] {
   font-size: 16px;

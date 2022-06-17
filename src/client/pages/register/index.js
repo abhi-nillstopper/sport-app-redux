@@ -1,13 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../actions/register_action";
 import { loginHandler } from "../../actions/authentication_action";
 
 import "./register.css";
 
-export default function Register({ history }) {
+export default function Register() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isLoggedIn = useSelector((state) => {
     return state.authentication.isLoggedIn;
@@ -18,27 +20,29 @@ export default function Register({ history }) {
   });
 
   useEffect(() => {
-    isLoggedIn && history.push("/");
+    isLoggedIn && navigate("/");
   }, [isLoggedIn]);
 
-  useEffect(async () => {
-    if (
-      Object.keys(response).length > 0 &&
-      Object.keys(response.data).length > 0
-    ) {
-      const user_id = response.data.user_id || false;
-      const user = response.data.user || false;
+  useEffect(() => {
+    (async function () {
+      if (
+        Object.keys(response).length > 0 &&
+        Object.keys(response.data).length > 0
+      ) {
+        const user_id = response.data.user_id || false;
+        const user = response.data.user || false;
 
-      if (user_id && user) {
-        localStorage.setItem("user_id", user_id);
-        localStorage.setItem("user", user);
-        await dispatch(loginHandler());
-        history.push("/");
-      } else {
-        const { message } = response.data;
-        errorHandler(message);
+        if (user_id && user) {
+          localStorage.setItem("user_id", user_id);
+          localStorage.setItem("user", user);
+          await dispatch(loginHandler());
+          navigate("/");
+        } else {
+          const { message } = response.data;
+          errorHandler(message);
+        }
       }
-    }
+    })();
   }, [response]);
 
   const [email, setEmail] = useState("");
@@ -82,7 +86,7 @@ export default function Register({ history }) {
         Please <strong>register</strong> for your account
       </p>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicFirstName">
+        <Form.Group className="form-group" controlId="formBasicFirstName">
           <Form.Label>First Name</Form.Label>
           <Form.Control
             type="text"
@@ -92,7 +96,7 @@ export default function Register({ history }) {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicLastName">
+        <Form.Group className="form-group" controlId="formBasicLastName">
           <Form.Label>Last Name</Form.Label>
           <Form.Control
             type="text"
@@ -102,7 +106,7 @@ export default function Register({ history }) {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group className="form-group" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -115,7 +119,7 @@ export default function Register({ history }) {
           </Form.Text>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group className="form-group" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -126,15 +130,15 @@ export default function Register({ history }) {
         {/* <Form.Group controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
-        <Form.Group controlId="formBasicSubmit">
+        <Form.Group className="form-group" controlId="formBasicSubmit">
           <Button variant="primary" type="submit" className="full-width-btn">
             Submit
           </Button>
         </Form.Group>
-        <Form.Group controlId="formBasicLogin">
+        <Form.Group className="form-group" controlId="formBasicLogin">
           <Button
             variant="secondary"
-            onClick={() => history.push("/login")}
+            onClick={() => navigate("/login")}
             className="full-width-btn"
           >
             Login

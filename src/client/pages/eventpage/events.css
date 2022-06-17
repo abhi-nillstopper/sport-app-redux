@@ -17,7 +17,7 @@ label#thumbnail {
   height: 120px;
 }
 
-label#thumbnail div input[type="file"] {
+label#thumbnail input[type="file"] {
   display: none;
 }
 

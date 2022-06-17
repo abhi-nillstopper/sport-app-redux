@@ -1,6 +1,7 @@
 import React from "react";
 import propType from "prop-types";
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
+import withRouter from "../../wrapper/with_router";
 import { bindActionCreators } from "redux";
 import {
   Form,
@@ -40,6 +41,7 @@ class EventPage extends React.Component {
       preview: null,
       fieldEmpty: false,
       success: false,
+      hasError: false,
     };
 
     // this.handleOnChange = this.handleOnChange.bind(this);
@@ -48,11 +50,15 @@ class EventPage extends React.Component {
 
   componentDidMount() {
     if (!this.user) {
-      this.props.history.push("/login");
+      // this.props.history.push("/login");
+      this.props.navigate("/login");
     } else {
-      document.querySelector(
+      const sportDropDown = document.querySelector(
         `div[name="sport-dropdown"]`
-      ).children[0].disabled = true;
+      );
+      if (sportDropDown) {
+        sportDropDown.children[0].disabled = true;
+      }
     }
   }
 
@@ -74,9 +80,20 @@ class EventPage extends React.Component {
     if (success) {
       setTimeout(() => {
         this.props.changeSuccess(false);
-        this.props.history.push("/");
+        // this.props.history.push("/");
+        this.props.navigate("/");
       }, 2000);
     }
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.log("error: ", error, "errorInfo: ", errorInfo);
   }
 
   async submitHandler(e) {
@@ -135,7 +152,7 @@ class EventPage extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
+    const { navigate } = this.props;
     let {
       date,
       description,
@@ -145,119 +162,141 @@ class EventPage extends React.Component {
       preview,
       fieldEmpty,
       success,
+      hasError,
     } = this.state;
     return (
       <Container className="new-event-container">
-        <h2>Create your event</h2>
-        <Form onSubmit={this.submitHandler}>
-          <Form.Group controlId="formBasicThumbnail">
-            <Form.Label>Upload Image:</Form.Label>
-            <Form.Label
-              id="thumbnail"
-              style={{
-                backgroundImage: `url(${preview})`,
-                backgroundSize: "cover",
-              }}
-              className={thumbnail ? "has-thumbnail" : ""}
-            >
-              <Form.File name="thumbnail" onChange={this.handleOnChange} />
-              {!preview && <CameraIcon />}
-            </Form.Label>
-          </Form.Group>
-          <Form.Group controlId="formBasicTitle">
-            <Form.Label>Title:</Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={title}
-              placeholder="Enter Title"
-              onChange={this.handleOnChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicDescription">
-            <Form.Label>Description:</Form.Label>
-            <Form.Control
-              type="text"
-              name="description"
-              value={description}
-              placeholder="Enter Description"
-              onChange={this.handleOnChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicPrice">
-            <Form.Label>Price:</Form.Label>
-            <Form.Control
-              type="number"
-              name="price"
-              value={price}
-              placeholder="Enter Price in ₹"
-              onChange={this.handleOnChange}
-            />
-          </Form.Group>
+        {hasError ? (
+          <>
+            <h1>Error in page</h1>
+          </>
+        ) : (
+          <React.Fragment>
+            <h2>Create your event</h2>
+            <Form onSubmit={this.submitHandler}>
+              <Form.Group className="form-group" controlId="formBasicThumbnail">
+                <Form.Label>Upload Image:</Form.Label>
+                <Form.Label
+                  id="thumbnail"
+                  style={{
+                    backgroundImage: `url(${preview})`,
+                    backgroundSize: "cover",
+                  }}
+                  className={thumbnail ? "has-thumbnail" : ""}
+                >
+                  <Form.Control
+                    type="file"
+                    name="thumbnail"
+                    onChange={this.handleOnChange}
+                  />
+                  {!preview && <CameraIcon />}
+                </Form.Label>
+              </Form.Group>
 
-          <Form.Group controlId="formBasicDate">
-            <Form.Label>Date:</Form.Label>
-            <Form.Control
-              type="date"
-              name="date"
-              value={date}
-              placeholder="Enter Date"
-              onChange={this.handleOnChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicSport">
-            {/* <Form.Label>Sport:</Form.Label> */}
-            <SplitButton
-              variant={"secondary"}
-              name="sport-dropdown"
-              title={"Sport"}
-            >
-              <Dropdown.Item eventKey="1" disabled>
-                Select Sport
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              {this.dropDownItems.map((drpdwn, idx) => {
-                return (
-                  <Dropdown.Item
-                    key={idx}
-                    eventKey={drpdwn.key}
-                    onSelect={this.onSelectSport}
-                  >
-                    {drpdwn.itemName}
+              <Form.Group className="form-group" controlId="formBasicTitle">
+                <Form.Label>Title:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="title"
+                  value={title}
+                  placeholder="Enter Title"
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+
+              <Form.Group
+                className="form-group"
+                controlId="formBasicDescription"
+              >
+                <Form.Label>Description:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="description"
+                  value={description}
+                  placeholder="Enter Description"
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="form-group" controlId="formBasicPrice">
+                <Form.Label>Price:</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="price"
+                  value={price}
+                  placeholder="Enter Price in ₹"
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+
+              <Form.Group className="form-group" controlId="formBasicDate">
+                <Form.Label>Date:</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date"
+                  value={date}
+                  placeholder="Enter Date"
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="form-group" controlId="formBasicSport">
+                {/* <Form.Label>Sport:</Form.Label> */}
+                <SplitButton
+                  variant={"secondary"}
+                  name="sport-dropdown"
+                  title={"Sport"}
+                >
+                  <Dropdown.Item eventKey="1" disabled>
+                    Select Sport
                   </Dropdown.Item>
-                );
-              })}
-            </SplitButton>
-          </Form.Group>
-          <Form.Group controlId="formBasicSubmit">
-            <Button variant="primary" type="submit" className="full-width-btn">
-              Create Event
-            </Button>
-          </Form.Group>
-          <Form.Group controlId="formBasicDashboard">
-            <Button
-              variant="danger"
-              onClick={() => history.push("/")}
-              title="Dashboard"
-              className="full-width-btn"
-            >
-              Cancel
-            </Button>
-          </Form.Group>
-        </Form>
-        {fieldEmpty ? (
-          <Alert variant="danger" className="event-validation">
-            missing required fields
-          </Alert>
-        ) : (
-          <></>
-        )}
-        {success ? (
-          <Alert variant="success" className="event-validation">
-            Event created
-          </Alert>
-        ) : (
-          <></>
+                  <Dropdown.Divider />
+                  {this.dropDownItems.map((drpdwn, idx) => {
+                    return (
+                      <Dropdown.Item
+                        key={idx}
+                        eventKey={drpdwn.key}
+                        onSelect={this.onSelectSport}
+                      >
+                        {drpdwn.itemName}
+                      </Dropdown.Item>
+                    );
+                  })}
+                </SplitButton>
+              </Form.Group>
+              <Form.Group className="form-group" controlId="formBasicSubmit">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="full-width-btn"
+                >
+                  Create Event
+                </Button>
+              </Form.Group>
+              <Form.Group className="form-group" controlId="formBasicDashboard">
+                <Button
+                  variant="danger"
+                  onClick={() => navigate("/")}
+                  title="Dashboard"
+                  className="full-width-btn"
+                >
+                  Cancel
+                </Button>
+              </Form.Group>
+            </Form>
+            {fieldEmpty ? (
+              <Alert variant="danger" className="event-validation">
+                missing required fields
+              </Alert>
+            ) : (
+              <></>
+            )}
+            {success ? (
+              <Alert variant="success" className="event-validation">
+                Event created
+              </Alert>
+            ) : (
+              <></>
+            )}
+          </React.Fragment>
         )}
       </Container>
     );
@@ -268,7 +307,7 @@ EventPage.propType = {
   success: propType.bool,
   changeSuccess: propType.func,
   createEvents: propType.func,
-  history: propType.any,
+  navigate: propType.any,
 };
 
 const mapStateToProps = (state) => ({
@@ -292,5 +331,6 @@ export default connect(
 )(withRouter(EventPage));
 
 export const PureEventPage = EventPage;
+// export default EventPage;
 
 // export default withRouter(EventPage);

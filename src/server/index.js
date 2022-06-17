@@ -13,11 +13,18 @@ const CONNECTED_USERS = {};
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
+  // process.env.NODE_ENV = "development";
+  console.dir(process.env);
+
+  // require("dotenv").config({ path: `../../.env.${process.env.NODE_ENV}` });
 }
 
 //socket.io Server
 const io = new ioServer(httpServer, {
-  cors: { origin: process.env.SPORT_FRONTEND_URL.trim(), methods: ["GET", "POST"] },
+  cors: {
+    origin: process.env.SPORT_FRONTEND_URL.trim(),
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {

@@ -8,6 +8,7 @@ import {
   Dropdown,
   Container,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { io as socketio } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,8 +19,10 @@ import { fetchEvents } from "../../actions/dashboard_action";
 import { logoutHandler } from "../../actions/authentication_action";
 
 //dashboard will shoow all the events
-export default function Dashboard({ history }) {
+export default function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const radios = [
     { name: "All Sport", value: "" },
     { name: "My Events", value: "myevents" },
@@ -47,8 +50,8 @@ export default function Dashboard({ history }) {
   });
 
   useEffect(() => {
-    isLoggedIn && history.push("/");
-    !isLoggedIn && history.push("/login");
+    isLoggedIn && navigate("/");
+    !isLoggedIn && navigate("/login");
   }, [isLoggedIn]);
 
   const getEvents = async (filter) => {
@@ -110,7 +113,7 @@ export default function Dashboard({ history }) {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user");
     await dispatch(logoutHandler());
-    history.push("/login");
+    navigate("/login");
   };
 
   const successHandler = (message) => {

@@ -1,13 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import api from "../../service/api";
 import { useSelector, useDispatch } from "react-redux";
 // import { UserContext } from "../../user-context";
 import { loginHandler } from "../../actions/authentication_action";
 import "./login.css";
 
-export default function Login({ history }) {
+export default function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,12 +20,10 @@ export default function Login({ history }) {
   const isLoggedIn = useSelector((state) => {
     return state.authentication.isLoggedIn;
   });
-  
-  useEffect(() => {
-    isLoggedIn && history.push("/");
-  }, [isLoggedIn]);
 
-  
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, [isLoggedIn]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ export default function Login({ history }) {
         localStorage.setItem("user", user);
         await dispatch(loginHandler());
         // setIsLoggedIn(true);
-        history.push("/");
+        navigate("/");
       } else {
         const { message } = response.data;
         errorHandler(message);
@@ -60,7 +60,7 @@ export default function Login({ history }) {
         Please <strong>login</strong> to your account
       </p>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group className="form-group" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -73,7 +73,7 @@ export default function Login({ history }) {
           </Form.Text>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group className="form-group" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -84,16 +84,16 @@ export default function Login({ history }) {
         {/* <Form.Group controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
-        <Form.Group controlId="formBasicSubmit">
+        <Form.Group className="form-group" controlId="formBasicSubmit">
           <Button variant="primary" type="submit" className="full-width-btn">
             Login
           </Button>
         </Form.Group>
-        <Form.Group controlId="formBasicNewAccount">
+        <Form.Group className="form-group" controlId="formBasicNewAccount">
           <Button
             variant="secondary"
             className="full-width-btn"
-            onClick={() => history.push("/register")}
+            onClick={() => navigate("/register")}
           >
             Create New Account
           </Button>
