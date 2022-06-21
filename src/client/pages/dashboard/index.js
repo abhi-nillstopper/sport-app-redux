@@ -119,7 +119,6 @@ export default function Dashboard() {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user");
     await dispatch(logoutHandler());
-    navigate("/login");
   };
 
   const successHandler = (message) => {
