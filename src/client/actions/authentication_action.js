@@ -6,6 +6,7 @@ export const loginHandler = () => async (dispatch) => {
     type: LOGGED_IN,
     payload: true,
   });
+  return;
 };
 
 export const logoutHandler = () => async (dispatch) => {
@@ -13,4 +14,5 @@ export const logoutHandler = () => async (dispatch) => {
     type: LOGOUT,
     payload: false,
   });
+  return;
 };

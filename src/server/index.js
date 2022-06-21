@@ -13,9 +13,8 @@ const CONNECTED_USERS = {};
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
+  
   // process.env.NODE_ENV = "development";
-  console.dir(process.env);
-
   // require("dotenv").config({ path: `../../.env.${process.env.NODE_ENV}` });
 }
 

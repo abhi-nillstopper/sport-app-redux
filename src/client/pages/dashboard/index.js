@@ -31,7 +31,6 @@ export default function Dashboard() {
     { name: "Swimming", value: "swimming" },
   ];
 
-  const [isLoading, SetIsLoading] = useState(true);
   const [radioValue, setRadioValue] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,15 +48,17 @@ export default function Dashboard() {
     return state.dashboard.events;
   });
 
+  const eventsLoaded = useSelector((state) => {
+    return state.dashboard.eventsLoaded;
+  });
+
   useEffect(() => {
-    isLoggedIn && navigate("/");
-    !isLoggedIn && navigate("/login");
+    isLoggedIn ? navigate("/") : navigate("/login");
   }, [isLoggedIn]);
 
   const getEvents = async (filter) => {
     try {
       await dispatch(fetchEvents(filter));
-      SetIsLoading(false);
     } catch (error) {
       console.log(error);
       errorHandler(error.message, true);
@@ -69,13 +70,15 @@ export default function Dashboard() {
   }, [radioValue]);
 
   useEffect(() => {
-    if (!isLoading) {
-      //disable event dropdown
-      document.querySelector(
-        `div[name="select-event-dropdown"]`
-      ).children[0].disabled = true;
+    //disable event dropdown
+    const dropDownLabel = document.querySelector(
+      `div[name="select-event-dropdown"]`
+    );
+
+    if (eventsLoaded && dropDownLabel && !!dropDownLabel.children[0]) {
+      dropDownLabel.children[0].disabled = true;
     }
-  }, [isLoading]);
+  }, [eventsLoaded]);
 
   const socket = useMemo(
     () =>
@@ -91,13 +94,16 @@ export default function Dashboard() {
     });
   }, [registartionRequests, socket]);
 
-
   const dropDownHandler = (eventKey = "", event = "") => {
     setRadioValue(eventKey);
 
-    document.querySelector(
+    const dropDownLabel = document.querySelector(
       `div[name="select-event-dropdown"]`
-    ).children[0].innerHTML = event.target.innerHTML;
+    );
+
+    if (dropDownLabel && !!dropDownLabel.children[0]) {
+      dropDownLabel.children[0].innerHTML = event.target.innerHTML;
+    }
   };
 
   const errorHandler = (message, logout = false) => {
@@ -171,7 +177,7 @@ export default function Dashboard() {
 
   return (
     <Container className="dashboard-container">
-      {!isLoading ? (
+      {eventsLoaded ? (
         <>
           <ul className="notification">
             {registartionRequests.map((request) => {

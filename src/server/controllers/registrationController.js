@@ -17,10 +17,8 @@ const RegistrationController = {
         event: eventId,
       });
 
-      await registration
-        .populate("event")
-        .populate("user", "-password")
-        .execPopulate();
+      await registration.populate("event");
+      await registration.populate("user", "-password");
 
       registration.owner = registration.event.user;
       registration.eventTitle = registration.event.title;
@@ -38,7 +36,7 @@ const RegistrationController = {
 
       return res.json(registration);
     } catch (err) {
-      console.log("error",error)
+      console.log("error", err);
       return res.status(400).json({ message: "Error while registration" });
     }
   },
@@ -59,7 +57,7 @@ const RegistrationController = {
         return res.status(400).json({ message: "Registration not found" });
       }
     } catch (err) {
-      console.log("error",error)
+      console.log("error", err);
       return res.status(400).json({ message: "Registration not found" });
     }
   },
@@ -72,7 +70,7 @@ const RegistrationController = {
       } = res.locals;
 
       const registrationArr = await Registration.find({
-        owner: user_id
+        owner: user_id,
       });
 
       if (registrationArr.length > 0) {
@@ -80,7 +78,7 @@ const RegistrationController = {
       }
       return res.status(400).json({ message: "Registration not found" });
     } catch (error) {
-      console.log("error",error)
+      console.log("error", error);
       return res.status(400).json({ message: "Registration not found" });
     }
   },
@@ -92,7 +90,7 @@ const RegistrationController = {
         },
       } = res.locals;
 
-      const ObjectId = require('mongoose').Types.ObjectId;
+      const ObjectId = require("mongoose").Types.ObjectId;
 
       const participationArr = await Registration.find({
         user: new ObjectId(user_id),
@@ -103,7 +101,7 @@ const RegistrationController = {
       }
       return res.status(400).json({ message: "participation not found" });
     } catch (error) {
-      console.log("error",error)
+      console.log("error", error);
       return res.status(400).json({ message: "participation not found" });
     }
   },

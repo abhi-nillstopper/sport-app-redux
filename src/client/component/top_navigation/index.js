@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Nav, Navbar, Button } from "react-bootstrap";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,11 +17,14 @@ export default function TopNavigation(props) {
 
   // const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
+  useEffect(() => {
+    !isLoggedIn && navigate("/login");
+  }, [isLoggedIn]);
+
   const handleLogout = async () => {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user");
-    await dispatch(logoutHandler());
-    navigate("/login");
+    dispatch(logoutHandler());
   };
 
   return (

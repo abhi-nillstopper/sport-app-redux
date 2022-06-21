@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
 import { Container } from "react-bootstrap";
 import { Provider } from "react-redux";
 import store from "./store";
